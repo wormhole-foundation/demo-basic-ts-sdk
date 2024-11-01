@@ -1,22 +1,22 @@
 # Cross-Chain Token Transfer with Wormhole SDK
 
-This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring native tokens and specific assets (e.g., USDC) across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche) and Solana. The solution uses Wormhole's Testnet environment for demonstration purposes.
+This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring native tokens across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche), Solana and Sui. The solution uses Wormhole's Testnet environment for demonstration purposes.
 
 ## Project Structure
 
 The project is organized as follows:
 
 ```plaintext
-cross-chain-transfer/
+demo-basic-ts-sdk/
 ├── src/
 │   ├── helpers/
-│   │   └── helpers.ts      # Helper functions for signer setup and environment variables
-│   ├── native-transfer.ts  # Script to perform a native token transfer between chains
-│   ├── usdc-transfer.ts    # Script to perform a USDC token transfer between chains
-│   └── tx-recover.ts       # Script to recover and manually complete a token transfer using a transaction ID
-├── .env                    # Environment variables for private keys (not included in the repo)
-├── package.json            # Project dependencies and scripts
-└── tsconfig.json           # TypeScript configuration
+│   │   └── helpers.ts          # Helper functions for signer setup and environment variables
+│   ├── scripts/
+│       ├── native-transfer.ts  # Script to perform a native token transfer between chains
+│       └── tx-recover.ts       # Script to recover and manually complete a token transfer using a transaction ID
+├── .env                        # Environment variables for private keys (not included in the repo)
+├── package.json                # Project dependencies and scripts
+└── tsconfig.json               # TypeScript configuration
 ```
 
 ## Prerequisites
@@ -69,16 +69,6 @@ npm run transfer:native
 
 > Note: This script is set up to transfer a native token from Solana to Avalanche using the Wormhole SDK. You can modify the source and destination chains within `src/native-transfer.ts`.
 
-## USDC Token Transfer
-
-To transfer USDC from one chain to another, run:
-
-```bash
-npm run transfer:usdc
-```
-
-This script uses pre-configured USDC token addresses on Solana and Avalanche. If you are transferring to different chains or using other assets, update the address in `src/usdc-transfer.ts`.
-
 ## Recover and Manually Complete a Token Transfer
 
 If a token transfer has been initiated but not completed, you can manually recover it and attempt to finish it using the transaction ID. This can be helpful in cases where the automatic process does not finalize the transfer.
@@ -104,8 +94,7 @@ npm run transfer:recover
 
 You can customize the following options within the scripts:
 
- - **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `native-transfer.ts` and `usdc-transfer.ts`
- - **Token Address** - change the token address if transferring assets other than the default USDC
+ - **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `native-transfer.ts`
  - **Amount and Transfer Settings** - adjust `amt`, `automatic`, and `nativeGas` to suit your needs
 
 ## Notes
