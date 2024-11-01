@@ -18,8 +18,8 @@ import { SignerStuff, getSigner } from '../helpers/helpers';
 	const wh = await wormhole('Testnet', [evm, solana, sui]);
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
-	const sendChain = wh.getChain('Solana');
-	const rcvChain = wh.getChain('Avalanche');
+	const sendChain = wh.getChain('Sui');
+	const rcvChain = wh.getChain('Solana');
 
 	// Get signer from local key but anything that implements
 	// Signer interface (e.g. wrapper around web wallet) should work
