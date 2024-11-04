@@ -6,7 +6,6 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"transfer:native": "npx tsx src/scripts/native-transfer.ts",
-		"transfer:usdc": "npx tsx src/scripts/usdc-transfer.ts",
 		"transfer:recover": "npx tsx src/scripts/tx-recover.ts"
 	},
 	"keywords": [],
