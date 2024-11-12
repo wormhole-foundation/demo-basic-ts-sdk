@@ -5,6 +5,8 @@ import {
 	Signer,
 	Wormhole,
 	Chain,
+	TokenId,
+	isTokenId,
 } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
@@ -51,4 +53,14 @@ export async function getSigner<N extends Network, C extends Chain>(
 		signer: signer as Signer<N, C>,
 		address: Wormhole.chainAddress(chain.chain, signer.address()),
 	};
+}
+
+export async function getTokenDecimals<N extends 'Mainnet' | 'Testnet' | 'Devnet'>(
+	wh: Wormhole<N>,
+	token: TokenId,
+	sendChain: ChainContext<N, any>
+): Promise<number> {
+	return isTokenId(token)
+		? Number(await wh.getDecimals(token.chain, token.address))
+		: sendChain.config.nativeTokenDecimals;
 }
