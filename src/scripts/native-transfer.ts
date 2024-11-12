@@ -4,14 +4,13 @@ import {
 	Wormhole,
 	amount,
 	wormhole,
-	isTokenId,
 	TokenId,
 	TokenTransfer,
 } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
-import { SignerStuff, getSigner } from '../helpers/helpers';
+import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 
 (async function () {
 	// Initialize the Wormhole object for the Testnet environment and add supported chains (evm and solana)
@@ -41,9 +40,7 @@ import { SignerStuff, getSigner } from '../helpers/helpers';
 	const nativeGas = automatic ? '0.1' : undefined;
 
 	// Used to normalize the amount to account for the tokens decimals
-	const decimals = isTokenId(token)
-		? Number(await wh.getDecimals(token.chain, token.address))
-		: sendChain.config.nativeTokenDecimals;
+	const decimals = await getTokenDecimals(wh, token, sendChain);
 
 	// Perform the token transfer if no recovery transaction ID is provided
 	const xfer = await tokenTransfer(wh, {
