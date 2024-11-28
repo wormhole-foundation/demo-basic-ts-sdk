@@ -50,12 +50,14 @@ Create a `.env` file in the root directory and add your private keys:
 ```bash
 ETH_PRIVATE_KEY="INSERT_PRIVATE_KEY"
 SOL_PRIVATE_KEY="INSERT_PRIVATE_KEY"
-SUI_PRIVATE_KEY="INSERT_SUI_MNEMONIC"
+SUI_MNEMONIC="INSERT_SUI_MNEMONIC"
+APTOS_PRIVATE_KEY="INSERT_PRIVATE_KEY"
 ```
 
  - **ETH_PRIVATE_KEY** - private key for an Ethereum-compatible wallet
  - **SOL_PRIVATE_KEY** - private key for a Solana wallet
- - **SUI_PRIVATE_KEY** - mnemonic for a Sui wallet
+ - **SUI_MNEMONIC** - mnemonic for a Sui wallet
+ - **APTOS_PRIVATE_KEY** - private key for an Aptos wallet
 
 >Important: For Sui, you must provide a mnemonic instead of a private key. Ensure these keys are valid and have the necessary permissions to perform transfers.
 
