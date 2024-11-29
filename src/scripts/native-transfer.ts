@@ -10,14 +10,15 @@ import {
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
+import aptos from '@wormhole-foundation/sdk/aptos';
 import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 
 (async function () {
 	// Initialize the Wormhole object for the Testnet environment and add supported chains (evm and solana)
-	const wh = await wormhole('Testnet', [evm, solana, sui]);
+	const wh = await wormhole('Testnet', [evm, solana, sui, aptos]);
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
-	const sendChain = wh.getChain('Sui');
+	const sendChain = wh.getChain('Aptos');
 	const rcvChain = wh.getChain('Solana');
 
 	// Get signer from local key but anything that implements

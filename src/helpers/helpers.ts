@@ -11,6 +11,7 @@ import {
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
+import aptos from '@wormhole-foundation/sdk/aptos';
 import { config } from 'dotenv';
 config();
 
@@ -42,8 +43,11 @@ export async function getSigner<N extends Network, C extends Chain>(
 			signer = await (await evm()).getSigner(await chain.getRpc(), getEnv('ETH_PRIVATE_KEY'));
 			break;
 		case 'Sui':
-			signer = await (await sui()).getSigner(await chain.getRpc(), getEnv('SUI_PRIVATE_KEY'));
+			signer = await (await sui()).getSigner(await chain.getRpc(), getEnv('SUI_MNEMONIC'));
 			break;
+		case 'Aptos':
+			signer = await (await aptos()).getSigner(await chain.getRpc(), getEnv('APTOS_PRIVATE_KEY'));
+		break;
 		default:
 			throw new Error('Unsupported platform: ' + platform);
 	}
