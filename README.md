@@ -1,6 +1,8 @@
 # Cross-Chain Token Transfer with Wormhole SDK
 
-This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring native tokens across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche), Solana and Sui. The solution uses Wormhole's Testnet environment for demonstration purposes.
+This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring native tokens across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche), Solana, and Sui. The solution uses Wormhole's Testnet environment for demonstration purposes.
+
+For a complete tutorial on performing cross-chain token transfers using the Portal Bridge from scratch, please take a look at the [Wormhole CCTP Tutorial](https://wormhole.com/docs/tutorials/messaging/portal-bridge/).
 
 ## Project Structure
 
