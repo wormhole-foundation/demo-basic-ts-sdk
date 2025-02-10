@@ -76,7 +76,7 @@ Run the script:
 npm run create:wrapped
 ```
 
-The script retrieves the wrapped token ID, creates an attestation via the Token Bridge, fetches the signed VAA, and submits it to the destination chain. If the token is already wrapped, it returns:
+The script retrieves the wrapped token ID, creates an attestation, fetches the signed VAA, and submits it to the destination chain. If the token is already wrapped, it returns:
 
 ```bash
 Token already wrapped on Base Sepolia
