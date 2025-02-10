@@ -6,14 +6,15 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"transfer:native": "npx tsx src/scripts/native-transfer.ts",
-		"transfer:recover": "npx tsx src/scripts/tx-recover.ts"
+		"transfer:recover": "npx tsx src/scripts/tx-recover.ts",
+		"create:wrapped": "npx tsx src/scripts/create-wrapped.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
-		"@wormhole-foundation/sdk": "^0.10.9",
+		"@wormhole-foundation/sdk": "1.5.2",
 		"dotenv": "^16.4.5"
 	},
 	"devDependencies": {
