@@ -30,7 +30,8 @@ function getEnv(key: string): string {
 
 // Signer setup function for different blockchain platforms
 export async function getSigner<N extends Network, C extends Chain>(
-	chain: ChainContext<N, C>
+	chain: ChainContext<N, C>,
+	gasLimit?: bigint
 ): Promise<{ chain: ChainContext<N, C>; signer: Signer<N, C>; address: ChainAddress<C> }> {
 	let signer: Signer;
 	const platform = chain.platform.utils()._platform;
@@ -40,14 +41,17 @@ export async function getSigner<N extends Network, C extends Chain>(
 			signer = await (await solana()).getSigner(await chain.getRpc(), getEnv('SOL_PRIVATE_KEY'));
 			break;
 		case 'Evm':
-			signer = await (await evm()).getSigner(await chain.getRpc(), getEnv('ETH_PRIVATE_KEY'));
+			const evmSignerOptions = gasLimit ? { gasLimit } : {};
+			signer = await (
+				await evm()
+			).getSigner(await chain.getRpc(), getEnv('ETH_PRIVATE_KEY'), evmSignerOptions);
 			break;
 		case 'Sui':
 			signer = await (await sui()).getSigner(await chain.getRpc(), getEnv('SUI_MNEMONIC'));
 			break;
 		case 'Aptos':
 			signer = await (await aptos()).getSigner(await chain.getRpc(), getEnv('APTOS_PRIVATE_KEY'));
-		break;
+			break;
 		default:
 			throw new Error('Unsupported platform: ' + platform);
 	}
