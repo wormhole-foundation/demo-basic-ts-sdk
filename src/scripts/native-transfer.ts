@@ -104,7 +104,7 @@ async function tokenTransfer<N extends Network>(
 
 	// 2) Wait for the VAA to be signed and ready (not required for auto transfer)
 	console.log('Getting Attestation');
-	await xfer.fetchAttestation(60_000);
+	await xfer.fetchAttestation(400_000);
 	// console.log(`Got Attestation: `, attestIds);
 	console.log(' ');
 

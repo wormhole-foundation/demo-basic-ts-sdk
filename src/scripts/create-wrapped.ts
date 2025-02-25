@@ -10,6 +10,7 @@ import { getSigner } from '../helpers/helpers';
 
 	// Define the source and destination chains
 	const origChain = wh.getChain('ArbitrumSepolia');
+	// funds on the destination chain needed!
 	const destChain = wh.getChain('BaseSepolia');
 
 	// Retrieve the token ID from the source chain
