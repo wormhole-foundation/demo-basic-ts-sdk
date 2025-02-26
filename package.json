@@ -1,5 +1,5 @@
 {
-	"name": "cctp-cross-chain-transfer",
+	"name": "demo-ts-sdk",
 	"version": "1.0.0",
 	"type": "module",
 	"main": "index.js",

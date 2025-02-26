@@ -18,8 +18,8 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	const wh = await wormhole('Testnet', [evm, solana, sui, aptos]);
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
-	const sendChain = wh.getChain('Aptos');
-	const rcvChain = wh.getChain('Solana');
+	const sendChain = wh.getChain('BaseSepolia');
+	const rcvChain = wh.getChain('Monad');
 
 	// Get signer from local key but anything that implements
 	// Signer interface (e.g. wrapper around web wallet) should work
@@ -30,7 +30,7 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	const token = Wormhole.tokenId(sendChain.chain, 'native');
 
 	// Define the amount of tokens to transfer
-	const amt = '1';
+	const amt = '0.01';
 
 	// Set automatic transfer to false for manual transfer
 	const automatic = false;
@@ -104,7 +104,8 @@ async function tokenTransfer<N extends Network>(
 
 	// 2) Wait for the VAA to be signed and ready (not required for auto transfer)
 	console.log('Getting Attestation');
-	await xfer.fetchAttestation(400_000);
+	const timeout = 30 * 60 * 1000; // Timeout in milliseconds (20 minutes)
+	await xfer.fetchAttestation(timeout);
 	// console.log(`Got Attestation: `, attestIds);
 	console.log(' ');
 
