@@ -17,7 +17,7 @@ import { getSigner } from '../helpers/helpers';
 	const destChain = wh.getChain('Sepolia');
 
 	// Retrieve the token ID(for ERC-20)from the source chain
-	const erc20TokenAddress = '0xdCCa3C38b5e25f0907E93a01BeBFc91aAfE2387b'; // Custom ERC-20 Token Address
+	const erc20TokenAddress = 'CUSTOM ERC_20TOKENADDRESS'; // Custom ERC-20 Token Address
     const erc20TokenId: TokenId = Wormhole.tokenId(origChain.chain, erc20TokenAddress);
     console.log('ERC20 Token ID for Avalanche Sepolia (Example):', erc20TokenId);
 
@@ -34,10 +34,7 @@ import { getSigner } from '../helpers/helpers';
 	// Check if the token is already wrapped on the destination chain
 	try {
 		const wrapped = await tbDest.getWrappedAsset(erc20TokenId);
-		console.log("🚀 ~ create-wrapped.ts:35 ~ wrapped:", wrapped)
-
 		console.log(`Token already wrapped on ${destChain.chain}. Skipping attestation.`);
-
 
 		return { chain: destChain.chain, address: wrapped };
 	} catch (e) {
@@ -67,7 +64,6 @@ import { getSigner } from '../helpers/helpers';
 	// Fetch the signed VAA
 	const timeout = 25 * 60 * 1000;
 	const vaa = await wh.getVaa(msgs[0]!, 'TokenBridge:AttestMeta', timeout);
-	console.log("🚀 ~ create-wrapped.ts:42 ~ vaa:", vaa)
 
 	if (!vaa) {
 		throw new Error('VAA not found after retries exhausted. Try extending the timeout.');
@@ -82,8 +78,6 @@ import { getSigner } from '../helpers/helpers';
 		vaa,
 		Wormhole.parseAddress(destSigner.chain(), destSigner.address())
 	);
-	console.log("🚀 ~ create-wrapped.ts:34 ~ subAttestation:", subAttestation)
-
 
 	// Send attestation transaction and log the transaction hash
 	const tsx = await signSendWait(destChain, subAttestation, destSigner);
