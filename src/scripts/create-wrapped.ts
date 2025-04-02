@@ -1,14 +1,13 @@
-import { ChainContext, Wormhole, signSendWait, wormhole, TokenId } from '@wormhole-foundation/sdk';
+import { Wormhole, signSendWait, wormhole, TokenId } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
-// import solana from '@wormhole-foundation/sdk/solana';
-// import sui from '@wormhole-foundation/sdk/sui';
+import solana from '@wormhole-foundation/sdk/solana';
+import sui from '@wormhole-foundation/sdk/sui';
 import { inspect } from 'util';
 import { getSigner } from '../helpers/helpers';
 
 (async function () {
-	const wh = await wormhole('Testnet', [evm]);
+	const wh = await wormhole('Testnet', [evm, solana, sui]);
 	console.log("🚀 ~ create-wrapped.ts:10 ~ wh:", wh)
-
 
 	// Define the source and destination chains
 	const origChain = wh.getChain('Avalanche');
@@ -17,13 +16,12 @@ import { getSigner } from '../helpers/helpers';
 	const destChain = wh.getChain('Sepolia');
 
 	// Retrieve the token ID(for ERC-20)from the source chain
-	const erc20TokenAddress = '0xdCCa3C38b5e25f0907E93a01BeBFc91aAfE2387b'; // Custom ERC-20 Token Address
+	const erc20TokenAddress = 'Custom ERC-20ADDRESS'; // Custom ERC-20 Token Address
     const erc20TokenId: TokenId = Wormhole.tokenId(origChain.chain, erc20TokenAddress);
     console.log('ERC20 Token ID for Avalanche Sepolia (Example):', erc20TokenId);
 
 	// Retrieve the token ID(for native)from the source chain
 	// const token = await origChain.getNativeWrappedTokenId();
-	// console.log("🚀 ~ create-wrapped.ts:20 ~ token:", token)
 
 	// Destination chain signer setup
 	const gasLimit = BigInt(2_500_000); // Optional for EVM Chains
