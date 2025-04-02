@@ -17,7 +17,7 @@ import { getSigner } from '../helpers/helpers';
 	const destChain = wh.getChain('Sepolia');
 
 	// Retrieve the token ID(for ERC-20)from the source chain
-	const erc20TokenAddress = 'CUSTOM ERC_20TOKENADDRESS'; // Custom ERC-20 Token Address
+	const erc20TokenAddress = '0xdCCa3C38b5e25f0907E93a01BeBFc91aAfE2387b'; // Custom ERC-20 Token Address
     const erc20TokenId: TokenId = Wormhole.tokenId(origChain.chain, erc20TokenAddress);
     console.log('ERC20 Token ID for Avalanche Sepolia (Example):', erc20TokenId);
 
