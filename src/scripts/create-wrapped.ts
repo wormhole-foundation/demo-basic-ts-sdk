@@ -1,4 +1,4 @@
-import { Wormhole, signSendWait, wormhole, TokenId } from '@wormhole-foundation/sdk';
+import { Wormhole, signSendWait, wormhole } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
@@ -7,21 +7,18 @@ import { getSigner } from '../helpers/helpers';
 
 (async function () {
 	const wh = await wormhole('Testnet', [evm, solana, sui]);
-	console.log("🚀 ~ create-wrapped.ts:10 ~ wh:", wh)
-
 	// Define the source and destination chains
-	const origChain = wh.getChain('Avalanche');
+	const origChain = wh.getChain('Solana');
 
 	// funds on the destination chain needed!
-	const destChain = wh.getChain('Sepolia');
+	const destChain = wh.getChain('Berachain');
 
-	// Retrieve the token ID(for ERC-20)from the source chain
-	const erc20TokenAddress = 'Custom ERC-20ADDRESS'; // Custom ERC-20 Token Address
-    const erc20TokenId: TokenId = Wormhole.tokenId(origChain.chain, erc20TokenAddress);
-    console.log('ERC20 Token ID for Avalanche Sepolia (Example):', erc20TokenId);
+	// Retrieve the token ID from the source chain
+    const tokenId = Wormhole.tokenId(origChain.chain, "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU");
+    console.log(`token ID for ${origChain.chain}: `, tokenId);
 
 	// Retrieve the token ID(for native)from the source chain
-	// const token = await origChain.getNativeWrappedTokenId();
+	// const tokenId = await origChain.getNativeWrappedTokenId();
 
 	// Destination chain signer setup
 	const gasLimit = BigInt(2_500_000); // Optional for EVM Chains
@@ -31,7 +28,7 @@ import { getSigner } from '../helpers/helpers';
 
 	// Check if the token is already wrapped on the destination chain
 	try {
-		const wrapped = await tbDest.getWrappedAsset(erc20TokenId);
+		const wrapped = await tbDest.getWrappedAsset(tokenId);
 		console.log(`Token already wrapped on ${destChain.chain}. Skipping attestation.`);
 
 		return { chain: destChain.chain, address: wrapped };
@@ -45,7 +42,7 @@ import { getSigner } from '../helpers/helpers';
 	// Create an attestation transaction on the source chain
 	const tbOrig = await origChain.getTokenBridge();
 	const attestTxns = tbOrig.createAttestation(
-		erc20TokenId.address,
+		tokenId.address,
 		Wormhole.parseAddress(origSigner.chain(), origSigner.address())
 	);
 
@@ -85,7 +82,7 @@ import { getSigner } from '../helpers/helpers';
 	async function waitForIt() {
 		do {
 			try {
-				const wrapped = await tbDest.getWrappedAsset(erc20TokenId);
+				const wrapped = await tbDest.getWrappedAsset(tokenId);
 				return { chain: destChain.chain, address: wrapped };
 			} catch (e) {
 				console.error('Wrapped asset not found yet. Retrying...');
