@@ -18,19 +18,32 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	const wh = await wormhole('Testnet', [evm, solana, sui, aptos]);
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
-	const sendChain = wh.getChain('BaseSepolia');
-	const rcvChain = wh.getChain('Monad');
+	const origChain = wh.getChain('Solana');
+	const destChain = wh.getChain('Berachain');
 
 	// Get signer from local key but anything that implements
 	// Signer interface (e.g. wrapper around web wallet) should work
-	const source = await getSigner(sendChain);
-	const destination = await getSigner(rcvChain);
+	const source = await getSigner(origChain);
+	const destination = await getSigner(destChain);
 
-	// Shortcut to allow transferring native gas token
-	const token = Wormhole.tokenId(sendChain.chain, 'native');
+	// TODO: uncomment the comment below for transferring native gas tokens
+	const tokenId = Wormhole.tokenId("Solana", "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"); // USDC on Solana
+  	// Shortcut to allow transferring native gas token
+	// const tokenId = Wormhole.tokenId(destChain.chain, 'native');
+    console.log(`token ID for ${origChain.chain}: `, tokenId);
 
 	// Define the amount of tokens to transfer
 	const amt = '0.01';
+
+	// Check token balance on source chain
+	console.log('Checking source token balance...');
+	const decimals = await getTokenDecimals(wh, tokenId, origChain);
+	console.log(`Token decimals: `, decimals);	
+	const sourceTokenBalance = await origChain.getBalance(source.signer.address(), tokenId.address);
+	if (!sourceTokenBalance) {
+		throw new Error('Failed to get source token balance');
+	}
+	console.log(`Source token balance: `, sourceTokenBalance);
 
 	// Set automatic transfer to false for manual transfer
 	const automatic = false;
@@ -40,13 +53,16 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	// to the swap rate provided by the contract, denominated in native gas tokens
 	const nativeGas = automatic ? '0.1' : undefined;
 
-	// Used to normalize the amount to account for the tokens decimals
-	const decimals = await getTokenDecimals(wh, token, sendChain);
+	// Check if source has sufficient token balance
+	const transferAmount = amount.units(amount.parse(amt, decimals));
+	if (sourceTokenBalance < transferAmount) {
+		throw new Error(`Insufficient token balance. Required: ${amt}, Available: ${amount.parse(sourceTokenBalance.toString(), decimals)}`);
+	}
 
 	// Perform the token transfer if no recovery transaction ID is provided
 	const xfer = await tokenTransfer(wh, {
-		token,
-		amount: amount.units(amount.parse(amt, decimals)),
+		token: tokenId,
+		amount: transferAmount,
 		source,
 		destination,
 		delivery: {
@@ -111,10 +127,7 @@ async function tokenTransfer<N extends Network>(
 
 	// 3) Redeem the VAA on the dest chain
 	console.log('Completing Transfer');
-	// console.log('Destination Signer:', route.destination.signer);
-	console.log(' ');
 	const destTxids = await xfer.completeTransfer(route.destination.signer);
 	console.log(`Completed Transfer: `, destTxids);
-	console.log(' ');
 	console.log('Transfer completed successfully');
 }

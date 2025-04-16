@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"transfer:native": "npx tsx src/scripts/native-transfer.ts",
+		"transfer:token": "npx tsx src/scripts/token-transfer.ts",
 		"transfer:recover": "npx tsx src/scripts/tx-recover.ts",
 		"create:wrapped": "npx tsx src/scripts/create-wrapped.ts"
 	},
@@ -14,7 +14,7 @@
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
-		"@wormhole-foundation/sdk": "^1.10.0",
+		"@wormhole-foundation/sdk": "^1.15.0",
 		"dotenv": "^16.4.5"
 	},
 	"devDependencies": {
