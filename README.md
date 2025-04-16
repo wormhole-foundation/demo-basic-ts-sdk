@@ -1,6 +1,6 @@
 # Cross-Chain Token Transfer with Wormhole SDK
 
-This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring native tokens across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche), Solana, and Sui. The solution uses Wormhole's Testnet environment for demonstration purposes.
+This project demonstrates how to perform cross-chain token transfers using the [Wormhole SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts). It supports transferring tokens across different blockchain networks, including EVM-compatible chains (e.g., Ethereum, Avalanche), Solana, and Sui. The solution uses Wormhole's Testnet environment for demonstration purposes.
 
 For a complete tutorial on performing cross-chain token transfers using the Token Bridge from scratch, please take a look at the [Wormhole Token Bridge Tutorial](https://wormhole.com/docs/tutorials/messaging/token-bridge/).
 
@@ -14,7 +14,7 @@ demo-basic-ts-sdk/
 │   ├── helpers/
 │   │   └── helpers.ts          # Helper functions for signer setup and environment variables
 │   ├── scripts/
-│       ├── native-transfer.ts  # Script to perform a native token transfer between chains
+│       ├── token-transfer.ts  # Script to perform a token transfer between chains
 │       └── tx-recover.ts       # Script to recover and manually complete a token transfer using a transaction ID
 │       ├── create-wrapped.ts   # Script to create a wrapped token on the destination chain
 ├── .env                        # Environment variables for private keys (not included in the repo)
@@ -82,15 +82,15 @@ The script retrieves the wrapped token ID, creates an attestation, fetches the s
 Token already wrapped on Base Sepolia
 ```
 
-## Native Token Transfer
+## Token Transfer
 
-To initiate a native token transfer across chains, run:
+To initiate a token transfer across chains, run:
 
 ```bash
-npm run transfer:native
+npm run transfer:token
 ```
 
-> Note: This script is set up to transfer a native token from Solana to Avalanche using the Wormhole SDK. You can modify the source and destination chains within `src/native-transfer.ts`.
+> Note: This script is set up to transfer a token from Solana to Berachain using the Wormhole SDK. You can modify the source and destination chains within `src/token-transfer.ts`.
 
 ## Recover and Manually Complete a Token Transfer
 
@@ -117,7 +117,7 @@ npm run transfer:recover
 
 You can customize the following options within the scripts:
 
-- **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `native-transfer.ts`
+- **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `token-transfer.ts`
 - **Amount and Transfer Settings** - adjust `amt`, `automatic`, and `nativeGas` to suit your needs
 
 ## Notes
