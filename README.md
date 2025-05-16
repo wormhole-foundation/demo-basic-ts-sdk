@@ -17,6 +17,7 @@ demo-basic-ts-sdk/
 │       ├── token-transfer.ts  # Script to perform a token transfer between chains
 │       └── tx-recover.ts       # Script to recover and manually complete a token transfer using a transaction ID
 │       ├── create-wrapped.ts   # Script to create a wrapped token on the destination chain
+│       └── convert.ts          # Script to convert Solana private keys to base58 format
 ├── .env                        # Environment variables for private keys (not included in the repo)
 ├── package.json                # Project dependencies and scripts
 └── tsconfig.json               # TypeScript configuration
@@ -63,6 +64,25 @@ APTOS_PRIVATE_KEY="INSERT_PRIVATE_KEY"
 - **APTOS_PRIVATE_KEY** - private key for an Aptos wallet
 
 > Important: For Sui, you must provide a mnemonic instead of a private key. Ensure these keys are valid and have the necessary permissions to perform transfers.
+
+## Converting Solana Private Keys
+
+If you have a Solana private key in byte array format, you can use the `convert.ts` script to convert it to base58 format. For example, if you have a key like:
+
+```typescript
+[89,245,29,210,238,159,81,...] // 64-byte array
+```
+
+To use the convert script:
+
+1. Open `src/scripts/convert.ts`
+2. Replace the `byteArray` with your private key array
+3. Run the conversion:
+```bash
+npm run convert
+```
+
+The script will output the base58-encoded private key that you can use in your `.env` file as `SOL_PRIVATE_KEY`.
 
 ## Create Wrapped Tokens on a Destination Chain
 

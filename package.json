@@ -4,10 +4,10 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"transfer:token": "npx tsx src/scripts/token-transfer.ts",
 		"transfer:recover": "npx tsx src/scripts/tx-recover.ts",
-		"create:wrapped": "npx tsx src/scripts/create-wrapped.ts"
+		"create:wrapped": "npx tsx src/scripts/create-wrapped.ts",
+		"convert": "npx tsx src/scripts/convert.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -18,6 +18,7 @@
 		"dotenv": "^16.4.5"
 	},
 	"devDependencies": {
+		"bs58": "^6.0.0",
 		"tsx": "^4.19.0"
 	}
 }
