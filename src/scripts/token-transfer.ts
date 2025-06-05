@@ -15,7 +15,14 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 
 (async function () {
 	// Initialize the Wormhole object for the Testnet environment and add supported chains (evm and solana)
-	const wh = await wormhole('Testnet', [evm, solana, sui, aptos]);
+	const wh = await wormhole('Testnet', [evm, solana, sui, aptos], {
+	chains: {
+		//TODO: adjust rpcs if needed
+		Solana: {
+			rpc: 'https://api.devnet.solana.com',
+		}
+	},
+	});
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
 	const origChain = wh.getChain('Solana');
