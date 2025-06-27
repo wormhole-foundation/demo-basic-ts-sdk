@@ -36,7 +36,7 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	// TODO: uncomment the comment below for transferring native gas tokens
 	const tokenId = Wormhole.tokenId("Solana", "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"); // USDC on Solana
   	// Shortcut to allow transferring native gas token
-	// const tokenId = Wormhole.tokenId(destChain.chain, 'native');
+	// const tokenId = Wormhole.tokenId(origChain.chain, 'native');
     console.log(`token ID for ${origChain.chain}: `, tokenId);
 
 	// Define the amount of tokens to transfer
