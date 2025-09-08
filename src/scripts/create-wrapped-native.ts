@@ -1,12 +1,23 @@
-import { Wormhole, signSendWait, wormhole } from '@wormhole-foundation/sdk';
+import {
+    Wormhole,
+    chains,
+    signSendWait,
+    wormhole,
+} from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import { inspect } from 'util';
 import { getSigner } from '../helpers/helpers';
 
 (async function () {
-    const wh = await wormhole('Testnet', [evm]);
+    const wh = await wormhole('Mainnet', [evm], {
+        chains: {
+            XRPLEVM: {
+                rpc: 'https://rpc.xrplevm.org',
+            },
+        },
+    });
     // Define the source and destination chains
-    const origChain = wh.getChain('Sepolia');
+    const origChain = wh.getChain('Ethereum');
 
     // funds on the destination chain needed!
     const destChain = wh.getChain('XRPLEVM');
@@ -33,21 +44,32 @@ import { getSigner } from '../helpers/helpers';
         );
     }
 
-    // Source chain signer setup
-    const { signer: origSigner } = await getSigner(origChain);
+    // Use existing transaction ID if available (replace with your actual txid)
+    const existingTxid = process.env.ATTESTATION_TXID || null; // You can set this in .env file
+    // Or hardcode it: const existingTxid = "0xYOUR_TXID_HERE";
 
-    // Create an attestation transaction on the source chain
-    const tbOrig = await origChain.getTokenBridge();
-    const attestTxns = tbOrig.createAttestation(
-        tokenId.address,
-        Wormhole.parseAddress(origSigner.chain(), origSigner.address())
-    );
+    let txid: string;
 
-    // Submit the attestation transaction
-    const txids = await signSendWait(origChain, attestTxns, origSigner);
-    console.log('txids: ', inspect(txids, { depth: null }));
-    const txid = txids[0]!.txid;
-    console.log('Created attestation (save this): ', txid);
+    if (existingTxid) {
+        console.log('Using existing attestation txid:', existingTxid);
+        txid = existingTxid;
+    } else {
+        // Source chain signer setup
+        const { signer: origSigner } = await getSigner(origChain);
+
+        // Create an attestation transaction on the source chain
+        const tbOrig = await origChain.getTokenBridge();
+        const attestTxns = tbOrig.createAttestation(
+            tokenId.address,
+            Wormhole.parseAddress(origSigner.chain(), origSigner.address())
+        );
+
+        // Submit the attestation transaction
+        const txids = await signSendWait(origChain, attestTxns, origSigner);
+        console.log('txids: ', inspect(txids, { depth: null }));
+        txid = txids[0]!.txid;
+        console.log('Created attestation (save this): ', txid);
+    }
 
     // Retrieve the Wormhole message ID from the attestation transaction
     const msgs = await origChain.parseTransaction(txid);
