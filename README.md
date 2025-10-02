@@ -102,7 +102,16 @@ The script retrieves the wrapped token ID, creates an attestation, fetches the s
 Token already wrapped on Base Sepolia
 ```
 
-## Token Transfer
+## Token TransferConfiguration
+
+You can customize the following options within the scripts:
+
+- **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `token-transfer.ts`
+- **Amount and Transfer Settings** - adjust `amt`, `automatic`, and `nativeGas` to suit your needs
+- **Token Address** - set the `tokenId` to specify which token to transfer
+- **Transfer Protocol** - choose between `TokenBridge`, `AutomaticTokenBridge` or `ExecutorTokenBridge` for the transfer
+
+## Create a Token Transfer
 
 To initiate a token transfer across chains, run:
 
@@ -132,13 +141,6 @@ Once you have set the transaction ID, run the following command:
 ```bash
 npm run transfer:recover
 ```
-
-## Configuration
-
-You can customize the following options within the scripts:
-
-- **Source and Destination Chains** - modify `sendChain` and `rcvChain` in `token-transfer.ts`
-- **Amount and Transfer Settings** - adjust `amt`, `automatic`, and `nativeGas` to suit your needs
 
 ## Notes
 
