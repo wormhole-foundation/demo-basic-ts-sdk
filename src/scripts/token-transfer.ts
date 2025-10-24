@@ -180,9 +180,13 @@ async function tokenTransfer<N extends Network>(
 		// For ExecutorTokenBridge transfers, we can track the status via the executor API
 		// This provides real-time updates on the relay progress
 		let retry = 0;
+		const lastSrcTxid = srcTxids[srcTxids.length - 1];
+		if (!lastSrcTxid) {
+			throw new Error('No source transaction IDs returned from initiateTransfer');
+		}
 		while (retry < 5) {
 			try {
-				const [status] = await wh.getExecutorTxStatus(srcTxids.at(-1)!, xfer.fromChain.chain);
+				const [status] = await wh.getExecutorTxStatus(lastSrcTxid, xfer.fromChain.chain);
 				if (status) {
 					console.log(`Executor transfer status: `, status);
 					break;
