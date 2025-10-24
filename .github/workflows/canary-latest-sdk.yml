@@ -1,6 +1,9 @@
 name: Canary – Latest Wormhole SDK
 
 on:
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: '0 6 * * 1' # Runs every Monday at 06:00 UTC
   workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
@@ -44,8 +47,8 @@ jobs:
           printf 'failed=%s\n' "$( [ "$exit_code" -ne 0 ] && echo true || echo false )" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Open issue if typecheck fails
-        if: failure()
+      - name: Open issue if typecheck fails (scheduled run)
+        if: ${{ failure() && github.event_name == 'schedule' }}
         uses: actions/github-script@v7
         with:
           github-token: ${{ github.token }}
