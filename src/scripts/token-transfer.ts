@@ -53,7 +53,7 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	console.log(`Source token balance: `, sourceTokenBalance);
 
 	// Define the transfer protocol (TokenBridge, AutomaticTokenBridge or ExecutorTokenBridge)
-	const protocol: TokenTransfer.Protocol = 'TokenBridge';
+	const protocol: TokenTransfer.Protocol = 'Token';
 
 	// The automatic relayer has the ability to deliver some native gas funds to the destination account
 	// The amount specified for native gas will be swapped for the native gas token according
