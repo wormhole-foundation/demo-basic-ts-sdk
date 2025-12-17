@@ -25,7 +25,7 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 	});
 
 	// Grab chain Contexts -- these hold a reference to a cached rpc client
-	const origChain = wh.getChain('Solana');
+	const origChain = wh.getChain('abcd');
 	const destChain = wh.getChain('Berachain');
 
 	// Get signer from local key but anything that implements
