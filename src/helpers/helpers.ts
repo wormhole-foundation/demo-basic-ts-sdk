@@ -13,6 +13,8 @@ import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
 import aptos from '@wormhole-foundation/sdk/aptos';
 import { config } from 'dotenv';
+import * as fs from 'fs';
+import bs58 from 'bs58';
 config();
 
 export interface SignerStuff<N extends Network, C extends Chain> {
@@ -26,6 +28,12 @@ function getEnv(key: string): string {
 	const val = process.env[key];
 	if (!val) throw new Error(`Missing environment variable: ${key}`);
 	return val;
+}
+
+/** Load a Solana/SVM keypair JSON file as base58 string */
+export function loadKeypairAsBase58(path: string): string {
+	const keypairData = JSON.parse(fs.readFileSync(path, 'utf-8'));
+	return bs58.encode(Uint8Array.from(keypairData));
 }
 
 // Signer setup function for different blockchain platforms

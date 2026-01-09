@@ -3,7 +3,10 @@ import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
 import { inspect } from 'util';
-import { getSigner } from '../helpers/helpers';
+import { getSigner, loadKeypairAsBase58 } from '../helpers/helpers';
+
+// Set keypair path here, or leave undefined to use SOL_PRIVATE_KEY env
+const KEYPAIR_PATH: string | undefined = undefined;
 
 (async function () {
 	const wh = await wormhole('Testnet', [evm, solana, sui]);
@@ -15,14 +18,16 @@ import { getSigner } from '../helpers/helpers';
 
 	// Retrieve the token ID from the source chain
     const tokenId = Wormhole.tokenId(origChain.chain, "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU");
-    console.log(`token ID for ${origChain.chain}: `, tokenId);
+	console.log(`token ID for ${origChain.chain}: `, tokenId);
 
 	// Retrieve the token ID(for native)from the source chain
 	// const tokenId = await origChain.getNativeWrappedTokenId();
 
 	// Destination chain signer setup
 	const gasLimit = BigInt(2_500_000); // Optional for EVM Chains
-	const { signer: destSigner } = await getSigner(destChain, gasLimit);
+	const destSigner = KEYPAIR_PATH
+		? await (await solana()).getSigner(await destChain.getRpc(), loadKeypairAsBase58(KEYPAIR_PATH))
+		: (await getSigner(destChain, gasLimit)).signer;
 	const tbDest = await destChain.getTokenBridge();
 
 
@@ -30,6 +35,7 @@ import { getSigner } from '../helpers/helpers';
 	try {
 		const wrapped = await tbDest.getWrappedAsset(tokenId);
 		console.log(`Token already wrapped on ${destChain.chain}. Skipping attestation.`);
+		console.log('Wrapped token address:', wrapped.toString());
 
 		return { chain: destChain.chain, address: wrapped };
 	} catch (e) {
@@ -71,7 +77,7 @@ import { getSigner } from '../helpers/helpers';
 
 	const subAttestation = tbDest.submitAttestation(
 		vaa,
-		Wormhole.parseAddress(destSigner.chain(), destSigner.address())
+		Wormhole.parseAddress(destChain.chain, destSigner.address())
 	);
 
 	// Send attestation transaction and log the transaction hash
