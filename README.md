@@ -90,6 +90,8 @@ You must create a wrapped version if a token is not yet recognized on the destin
 
 Before running the script, open `src/scripts/create-wrapped.ts` and set the **source** and **destination** chains. By default, it wraps a token from Arbitrum Sepolia to Base Sepolia, but you can modify this as needed.
 
+For SVM chains, you can optionally set `KEYPAIR_PATH` in the script to use a keypair JSON file directly instead of `SOL_PRIVATE_KEY`.
+
 Run the script:
 
 ```bash

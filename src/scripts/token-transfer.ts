@@ -11,7 +11,10 @@ import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
 import aptos from '@wormhole-foundation/sdk/aptos';
-import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
+import { SignerStuff, getSigner, getTokenDecimals, loadKeypairAsBase58 } from '../helpers/helpers';
+
+// Set keypair path here, or leave undefined to use SOL_PRIVATE_KEY env
+const KEYPAIR_PATH: string | undefined = undefined;
 
 (async function () {
 	// Initialize the Wormhole object for the Testnet environment and add supported chains (evm and solana)
@@ -30,7 +33,12 @@ import { SignerStuff, getSigner, getTokenDecimals } from '../helpers/helpers';
 
 	// Get signer from local key but anything that implements
 	// Signer interface (e.g. wrapper around web wallet) should work
-	const source = await getSigner(origChain);
+	const source = KEYPAIR_PATH
+		? await (async () => {
+			const signer = await (await solana()).getSigner(await origChain.getRpc(), loadKeypairAsBase58(KEYPAIR_PATH));
+			return { chain: origChain, signer, address: Wormhole.chainAddress(origChain.chain, signer.address()) };
+		})()
+		: await getSigner(origChain);
 	const destination = await getSigner(destChain);
 
 	// TODO: uncomment the comment below for transferring native gas tokens
