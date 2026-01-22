@@ -3,7 +3,7 @@ import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
 import sui from '@wormhole-foundation/sdk/sui';
 import { inspect } from 'util';
-import { getSigner, loadKeypairAsBase58 } from '../helpers/helpers';
+import { getSigner, loadKeypairAsBase58, waitForWrappedAsset } from '../helpers/helpers';
 
 // Set keypair path here, or leave undefined to use SOL_PRIVATE_KEY env
 const KEYPAIR_PATH: string | undefined = undefined;
@@ -84,19 +84,6 @@ const KEYPAIR_PATH: string | undefined = undefined;
 	const tsx = await signSendWait(destChain, subAttestation, destSigner);
 	console.log('Transaction hash: ', tsx);
 
-	// Poll for the wrapped asset until it's available
-	async function waitForIt() {
-		do {
-			try {
-				const wrapped = await tbDest.getWrappedAsset(tokenId);
-				return { chain: destChain.chain, address: wrapped };
-			} catch (e) {
-				console.error('Wrapped asset not found yet. Retrying...');
-			}
-			console.log('Waiting before checking again...');
-			await new Promise((r) => setTimeout(r, 2000));
-		} while (true);
-	}
-
-	console.log('Wrapped Asset: ', await waitForIt());
+	const wrapped = await waitForWrappedAsset(tbDest, tokenId);
+	console.log('Wrapped Asset:', { chain: destChain.chain, address: wrapped.toString() });
 })().catch((e) => console.error(e));

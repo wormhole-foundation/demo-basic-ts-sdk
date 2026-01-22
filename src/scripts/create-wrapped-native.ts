@@ -1,7 +1,7 @@
 import { Wormhole, signSendWait, wormhole } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import { inspect } from 'util';
-import { getSigner } from '../helpers/helpers';
+import { getSigner, waitForWrappedAsset } from '../helpers/helpers';
 
 (async function () {
     const wh = await wormhole('Testnet', [evm]);
@@ -77,19 +77,6 @@ import { getSigner } from '../helpers/helpers';
     const tsx = await signSendWait(destChain, subAttestation, destSigner);
     console.log('Transaction hash: ', tsx);
 
-    // Poll for the wrapped asset until it's available
-    async function waitForIt() {
-        do {
-            try {
-                const wrapped = await tbDest.getWrappedAsset(tokenId);
-                return { chain: destChain.chain, address: wrapped };
-            } catch (e) {
-                console.error('Wrapped asset not found yet. Retrying...');
-            }
-            console.log('Waiting before checking again...');
-            await new Promise((r) => setTimeout(r, 2000));
-        } while (true);
-    }
-
-    console.log('Wrapped Asset: ', await waitForIt());
+    const wrapped = await waitForWrappedAsset(tbDest, tokenId);
+    console.log('Wrapped Asset:', { chain: destChain.chain, address: wrapped.toString() });
 })().catch((e) => console.error(e));
