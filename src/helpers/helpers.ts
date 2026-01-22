@@ -7,6 +7,7 @@ import {
 	Chain,
 	TokenId,
 	isTokenId,
+	TokenBridge,
 } from '@wormhole-foundation/sdk';
 import evm from '@wormhole-foundation/sdk/evm';
 import solana from '@wormhole-foundation/sdk/solana';
@@ -79,4 +80,25 @@ export async function getTokenDecimals<N extends 'Mainnet' | 'Testnet' | 'Devnet
 	return isTokenId(token)
 		? Number(await wh.getDecimals(token.chain, token.address))
 		: sendChain.config.nativeTokenDecimals;
+}
+
+export async function waitForWrappedAsset<N extends Network, C extends Chain>(
+	tokenBridge: TokenBridge<N, C>,
+	tokenId: TokenId,
+	timeoutMs = 25 * 60 * 1000,
+	intervalMs = 5000
+) {
+	const start = Date.now();
+	let attempt = 0;
+	while (Date.now() - start < timeoutMs) {
+		attempt++;
+		try {
+			return await tokenBridge.getWrappedAsset(tokenId);
+		} catch {
+			const elapsed = Math.round((Date.now() - start) / 1000);
+			console.log(`Wrapped asset not found yet (attempt ${attempt}, ${elapsed}s elapsed). Retrying...`);
+			await new Promise((r) => setTimeout(r, intervalMs));
+		}
+	}
+	throw new Error(`Wrapped asset not available after ${timeoutMs / 1000}s`);
 }

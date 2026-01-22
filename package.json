@@ -8,6 +8,7 @@
 		"transfer:recover": "npx tsx src/scripts/tx-recover.ts",
 		"create:wrapped": "npx tsx src/scripts/create-wrapped.ts",
 		"create:wrapped-native": "npx tsx src/scripts/create-wrapped-native.ts",
+		"submit:attestation": "npx tsx src/scripts/submit-attestation-from-vaa.ts",
 		"convert": "npx tsx src/scripts/convert.ts",
 		"typecheck": "tsc --noEmit"
 	},
