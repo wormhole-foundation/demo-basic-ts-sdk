@@ -9,6 +9,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default: 5
+      semver:
+        major: 14
     # Only update Wormhole dependencies
     allow:
       - dependency-name: "@wormhole-foundation/*" 
