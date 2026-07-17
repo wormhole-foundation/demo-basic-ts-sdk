@@ -25,7 +25,7 @@ const KEYPAIR_PATH: string | undefined = undefined;
 
 	// Set this to the transfer txid of the initiating transaction to recover a token transfer
 	// and attempt to fetch details about its progress.
-	let recoverTxid = '';
+	let recoverTxid =0xd2203e72ffae00a0265a93c7ec7978ea10739af3aade82d64f25b06a4d30af53'';
 
 	// Recover the transfer from the originating transaction ID
 	await TokenTransfer.from(wh, {
